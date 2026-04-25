@@ -2,7 +2,7 @@ name: category-sinkhole-domain
 type: domain
 description:
   ru: "Домены, перехваченные sinkhole-операторами (CERT.PL). Трафик к ним означает заражённого клиента."
-  en: "Domains seized by sinkhole operators (CERT.PL). Traffic to them indicates an infected client."
+  en: "Sinkhole domains seized by CERT.PL"
 
 flags:
   high_false_positive:

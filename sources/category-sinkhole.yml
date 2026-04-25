@@ -2,7 +2,7 @@ name: category-sinkhole
 type: ip
 description:
   ru: "IP-адреса известных sinkhole-серверов, управляемых исследователями безопасности и CERT-организациями"
-  en: "IP addresses of known sinkhole servers operated by security researchers and CERT organizations"
+  en: "Known sinkhole server IPs"
 
 flags:
   high_false_positive:

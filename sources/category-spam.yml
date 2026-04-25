@@ -2,7 +2,7 @@ name: category-spam
 type: ip
 description:
   ru: "IP-диапазоны и адреса источников спама. Основан на Spamhaus DROP/EDROP – наиболее авторитетных публичных антиспам-фидах."
-  en: "IP ranges and addresses of spam sources. Based on Spamhaus DROP/EDROP – the most authoritative public anti-spam feeds."
+  en: "Spamhaus DROP/EDROP hijacked IP blocks"
 
 flags:
   high_false_positive:

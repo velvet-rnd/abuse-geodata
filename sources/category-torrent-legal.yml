@@ -2,7 +2,7 @@ name: category-torrent-legal
 type: domain
 description:
   ru: "Домены легитимных торрент-сервисов: Linux-дистрибутивы, архивы, академические данные, FOSS"
-  en: "Legitimate torrent service domains: Linux distros, archives, academic data, FOSS"
+  en: "Legitimate torrents (Linux, FOSS, archives)"
 
 flags:
   high_false_positive:

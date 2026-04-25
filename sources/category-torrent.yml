@@ -2,7 +2,7 @@ name: category-torrent
 type: domain
 description:
   ru: "Домены торрент-сайтов и P2P-ресурсов для нелегального распространения контента"
-  en: "Torrent site and P2P resource domains used for illegal content distribution"
+  en: "Piracy torrent sites (legal excluded)"
 
 flags:
   high_false_positive:

@@ -2,7 +2,7 @@ name: category-phishing
 type: domain
 description:
   ru: "Фишинговые домены – сайты, имитирующие легитимные сервисы для кражи учётных данных"
-  en: "Phishing domains – sites impersonating legitimate services to steal credentials"
+  en: "Phishing and credential theft domains"
 
 flags:
   high_false_positive:

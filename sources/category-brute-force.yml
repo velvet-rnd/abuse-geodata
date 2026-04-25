@@ -2,7 +2,7 @@ name: category-brute-force
 type: ip
 description:
   ru: "IP-адреса, замеченные в брутфорс-атаках на SSH, RDP, FTP и другие сервисы"
-  en: "IP addresses observed conducting brute-force attacks on SSH, RDP, FTP and other services"
+  en: "SSH/RDP/FTP brute-force attack sources"
 
 flags:
   high_false_positive:

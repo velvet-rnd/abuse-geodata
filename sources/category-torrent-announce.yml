@@ -2,7 +2,7 @@ name: category-torrent-announce
 type: mixed
 description:
   ru: "IP-адреса и домены BitTorrent announce-серверов (трекеров)"
-  en: "IPs and domains of BitTorrent announce servers (trackers)"
+  en: "BitTorrent tracker announce servers"
 
 flags:
   high_false_positive:
