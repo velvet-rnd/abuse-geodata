@@ -170,11 +170,11 @@ jobs:
           lines.append('')
           lines.append('| File | Description |')
           lines.append('|------|-------------|')
-          lines.append('| \`geoip.dat\` | Xray/V2Ray geoip database |')
-          lines.append('| \`geosite.dat\` | Xray/V2Ray geosite database |')
-          lines.append('| \`geoip.db\` | sing-box MaxMind MMDB |')
-          lines.append('| \`srs/category-*.srs\` | sing-box rule-sets per category |')
-          lines.append('| \`txt/category-*.txt\` | Plain IP/domain lists |')
+          lines.append('| \`abuse-geoip.dat\` | Xray/V2Ray geoip database |')
+          lines.append('| \`abuse-geosite.dat\` | Xray/V2Ray geosite database |')
+          lines.append('| \`abuse-geoip.db\` | sing-box MaxMind MMDB |')
+          lines.append('| \`abuse-category-*.srs\` | sing-box rule-sets per category |')
+          lines.append('| \`abuse-category-*.txt\` | Plain IP/domain lists |')
 
           print('\n'.join(lines))
           ")
@@ -191,9 +191,9 @@ jobs:
           name: "Data ${{ steps.tag.outputs.tag }}"
           body: ${{ steps.body.outputs.body }}
           files: |
-            output/geoip.dat
-            output/geosite.dat
-            output/geoip.db
+            output/abuse-geoip.dat
+            output/abuse-geosite.dat
+            output/abuse-geoip.db
             output/srs/*.srs
             output/txt/*.txt
           make_latest: true

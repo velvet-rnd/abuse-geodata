@@ -34,9 +34,9 @@ jobs:
         run: |
           mkdir -p output/srs output/txt
           gh release download --repo ${{ github.repository }} --pattern '*' --clobber
-          mv *.dat *.db output/ 2>/dev/null || true
-          mv *.srs output/srs/ 2>/dev/null || true
-          mv *.txt output/txt/ 2>/dev/null || true
+          mv abuse-*.dat abuse-*.db output/ 2>/dev/null || true
+          mv abuse-*.srs output/srs/ 2>/dev/null || true
+          mv abuse-*.txt output/txt/ 2>/dev/null || true
           echo "=== Downloaded files ==="
           find output/ -type f | sort | while read f; do
             size=$(wc -c < "$f")

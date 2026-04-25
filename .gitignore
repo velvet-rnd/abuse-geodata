@@ -1,9 +1,0 @@
-data/
-output/
-tools/
-__pycache__/
-*.pyc
-.venv/
-CLAUDE.md
-*.zip
-*.tar.gz

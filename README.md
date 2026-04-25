@@ -1,6 +1,6 @@
 # abuse-geodata
 
-**[English](#english) | [Русский](#russian)**
+**[English](#english) | [Русский](#russian) | [中文](#chinese)**
 
 ---
 
@@ -16,13 +16,13 @@ All files are published as [GitHub Releases](../../releases/latest).
 
 | File | Format | Use case |
 |------|--------|----------|
-| `geoip.dat` | Xray/V2Ray | `geoip:category-*` routing rules |
-| `geosite.dat` | Xray/V2Ray | `geosite:category-*` routing rules |
-| `geoip.db` | MaxMind MMDB | sing-box `geoip` rules |
-| `srs/category-*.srs` | sing-box | Per-category rule-sets |
-| `srs/category-bundle-strict-*.srs` | sing-box | Aggregated stable categories only |
-| `srs/category-bundle-full-*.srs` | sing-box | All categories including noisy |
-| `txt/category-*.txt` | Plain text | ipset, hosts file, custom scripts |
+| `abuse-geoip.dat` | Xray/V2Ray | `abuse-geoip:category-*` routing rules |
+| `abuse-geosite.dat` | Xray/V2Ray | `abuse-geosite:category-*` routing rules |
+| `abuse-geoip.db` | MaxMind MMDB | sing-box `geoip` rules |
+| `abuse-category-*.srs` | sing-box | Per-category rule-sets |
+| `abuse-category-bundle-strict-*.srs` | sing-box | Aggregated stable categories only |
+| `abuse-category-bundle-full-*.srs` | sing-box | All categories including noisy |
+| `abuse-category-*.txt` | Plain text | ipset, hosts file, custom scripts |
 
 ### Usage
 
@@ -35,18 +35,18 @@ All files are published as [GitHub Releases](../../releases/latest).
       {
         "type": "field",
         "ip": [
-          "geoip:category-sinkhole",
-          "geoip:category-malware-c2",
-          "geoip:category-spam",
-          "geoip:category-brute-force"
+          "abuse-geoip:category-sinkhole",
+          "abuse-geoip:category-malware-c2",
+          "abuse-geoip:category-spam",
+          "abuse-geoip:category-brute-force"
         ],
         "outboundTag": "block"
       },
       {
         "type": "field",
         "domain": [
-          "geosite:category-malware-c2",
-          "geosite:category-phishing"
+          "abuse-geosite:category-malware-c2",
+          "abuse-geosite:category-phishing"
         ],
         "outboundTag": "block"
       }
@@ -58,7 +58,7 @@ All files are published as [GitHub Releases](../../releases/latest).
 }
 ```
 
-Place `geoip.dat` and `geosite.dat` in your Xray assets directory (default: `/usr/local/share/xray/`).
+Place `abuse-geoip.dat` and `abuse-geosite.dat` in your Xray assets directory (default: `/usr/local/share/xray/`).
 
 #### sing-box
 
@@ -70,7 +70,7 @@ Place `geoip.dat` and `geosite.dat` in your Xray assets directory (default: `/us
         "tag": "malware-c2-ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://github.com/velvetrnd/abuse-geodata/releases/latest/download/category-malware-c2-ip.srs",
+        "url": "https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-category-malware-c2-ip.srs",
         "update_interval": "24h"
       }
     ],
@@ -93,7 +93,7 @@ Place `geoip.dat` and `geosite.dat` in your Xray assets directory (default: `/us
 
 ```bash
 ipset create abuse-block hash:net
-curl -sL https://github.com/velvetrnd/abuse-geodata/releases/latest/download/category-bundle-strict-ip.txt \
+curl -sL https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-category-bundle-strict-ip.txt \
   | grep -v '^#' | xargs -I{} ipset add abuse-block {}
 
 iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
@@ -191,13 +191,13 @@ Subscribe to [@abuse_geodata_bot](https://t.me/abuse_geodata_bot) to get notific
 
 | Файл | Формат | Применение |
 |------|--------|------------|
-| `geoip.dat` | Xray/V2Ray | Правила роутинга `geoip:category-*` |
-| `geosite.dat` | Xray/V2Ray | Правила роутинга `geosite:category-*` |
-| `geoip.db` | MaxMind MMDB | Правила `geoip` в sing-box |
-| `srs/category-*.srs` | sing-box | Rule-set на каждую категорию |
-| `srs/category-bundle-strict-*.srs` | sing-box | Агрегат – только стабильные категории |
-| `srs/category-bundle-full-*.srs` | sing-box | Агрегат – все категории включая шумные |
-| `txt/category-*.txt` | Обычный текст | ipset, hosts-файл, кастомные скрипты |
+| `abuse-geoip.dat` | Xray/V2Ray | Правила роутинга `abuse-geoip:category-*` |
+| `abuse-geosite.dat` | Xray/V2Ray | Правила роутинга `abuse-geosite:category-*` |
+| `abuse-geoip.db` | MaxMind MMDB | Правила `geoip` в sing-box |
+| `abuse-category-*.srs` | sing-box | Rule-set на каждую категорию |
+| `abuse-category-bundle-strict-*.srs` | sing-box | Агрегат – только стабильные категории |
+| `abuse-category-bundle-full-*.srs` | sing-box | Агрегат – все категории включая шумные |
+| `abuse-category-*.txt` | Обычный текст | ipset, hosts-файл, кастомные скрипты |
 
 ### Использование
 
@@ -210,18 +210,18 @@ Subscribe to [@abuse_geodata_bot](https://t.me/abuse_geodata_bot) to get notific
       {
         "type": "field",
         "ip": [
-          "geoip:category-sinkhole",
-          "geoip:category-malware-c2",
-          "geoip:category-spam",
-          "geoip:category-brute-force"
+          "abuse-geoip:category-sinkhole",
+          "abuse-geoip:category-malware-c2",
+          "abuse-geoip:category-spam",
+          "abuse-geoip:category-brute-force"
         ],
         "outboundTag": "block"
       },
       {
         "type": "field",
         "domain": [
-          "geosite:category-malware-c2",
-          "geosite:category-phishing"
+          "abuse-geosite:category-malware-c2",
+          "abuse-geosite:category-phishing"
         ],
         "outboundTag": "block"
       }
@@ -233,7 +233,7 @@ Subscribe to [@abuse_geodata_bot](https://t.me/abuse_geodata_bot) to get notific
 }
 ```
 
-Положи `geoip.dat` и `geosite.dat` в директорию ресурсов Xray (по умолчанию `/usr/local/share/xray/`).
+Положи `abuse-geoip.dat` и `abuse-geosite.dat` в директорию ресурсов Xray (по умолчанию `/usr/local/share/xray/`).
 
 #### sing-box
 
@@ -245,7 +245,7 @@ Subscribe to [@abuse_geodata_bot](https://t.me/abuse_geodata_bot) to get notific
         "tag": "malware-c2-ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://github.com/velvetrnd/abuse-geodata/releases/latest/download/category-malware-c2-ip.srs",
+        "url": "https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-category-malware-c2-ip.srs",
         "update_interval": "24h"
       }
     ],
@@ -263,7 +263,7 @@ Subscribe to [@abuse_geodata_bot](https://t.me/abuse_geodata_bot) to get notific
 
 ```bash
 ipset create abuse-block hash:net
-curl -sL https://github.com/velvetrnd/abuse-geodata/releases/latest/download/category-bundle-strict-ip.txt \
+curl -sL https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-category-bundle-strict-ip.txt \
   | grep -v '^#' | xargs -I{} ipset add abuse-block {}
 
 iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
@@ -346,6 +346,176 @@ python scripts/test.py /path/to/release-dir
 ### Telegram-бот
 
 Подпишись на [@abuse_geodata_bot](https://t.me/abuse_geodata_bot), чтобы получать уведомления о новых релизах со статистикой по категориям и дельтой от предыдущей сборки.
+
+---
+
+<a name="chinese"></a>
+## 中文
+
+自动化威胁情报地理数据，支持 **Xray**、**sing-box** 和 **ipset**。  
+每日从公开 abuse 数据源构建。专为 VPN 运营商、主机托管商和网络管理员设计，用于保护基础设施、减少滥用投诉。
+
+### 下载
+
+所有文件发布在 [GitHub Releases](../../releases/latest)。
+
+| 文件 | 格式 | 用途 |
+|------|------|------|
+| `abuse-geoip.dat` | Xray/V2Ray | `abuse-geoip:category-*` 路由规则 |
+| `abuse-geosite.dat` | Xray/V2Ray | `abuse-geosite:category-*` 路由规则 |
+| `abuse-geoip.db` | MaxMind MMDB | sing-box `geoip` 规则 |
+| `abuse-category-*.srs` | sing-box | 按类别的规则集 |
+| `abuse-category-bundle-strict-*.srs` | sing-box | 仅包含稳定类别的聚合集 |
+| `abuse-category-bundle-full-*.srs` | sing-box | 包含所有类别（含高噪声） |
+| `abuse-category-*.txt` | 纯文本 | ipset、hosts 文件、自定义脚本 |
+
+### 使用方法
+
+#### Xray
+
+```json
+{
+  "routing": {
+    "rules": [
+      {
+        "type": "field",
+        "ip": [
+          "abuse-geoip:category-sinkhole",
+          "abuse-geoip:category-malware-c2",
+          "abuse-geoip:category-spam",
+          "abuse-geoip:category-brute-force"
+        ],
+        "outboundTag": "block"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "abuse-geosite:category-malware-c2",
+          "abuse-geosite:category-phishing"
+        ],
+        "outboundTag": "block"
+      }
+    ]
+  },
+  "outbounds": [
+    { "tag": "block", "protocol": "blackhole" }
+  ]
+}
+```
+
+将 `abuse-geoip.dat` 和 `abuse-geosite.dat` 放入 Xray 资源目录（默认：`/usr/local/share/xray/`）。
+
+#### sing-box
+
+```json
+{
+  "route": {
+    "rule_set": [
+      {
+        "tag": "malware-c2-ip",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-category-malware-c2-ip.srs",
+        "update_interval": "24h"
+      }
+    ],
+    "rules": [
+      {
+        "rule_set": ["malware-c2-ip", "malware-c2-domain", "sinkhole", "phishing"],
+        "outbound": "block"
+      }
+    ]
+  }
+}
+```
+
+#### ipset (Linux)
+
+```bash
+ipset create abuse-block hash:net
+curl -sL https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-category-bundle-strict-ip.txt \
+  | grep -v '^#' | xargs -I{} ipset add abuse-block {}
+
+iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
+```
+
+### 类别
+
+| 类别 | 类型 | 说明 | 标记 |
+|------|------|------|------|
+| `category-sinkhole` | IP | 安全研究人员运营的已知 sinkhole 服务器 | – |
+| `category-sinkhole-domain` | Domain | CERT.PL 接管的 sinkhole 域名 | ⚠️ 大型 |
+| `category-malware-c2` | IP + Domain | 恶意软件 C2 服务器（僵尸网络、勒索软件、木马） | – |
+| `category-phishing` | Domain | 钓鱼域名 | ⚡ 高波动 |
+| `category-spam` | IP | Spamhaus DROP/EDROP — 被劫持的 IP 段 | – |
+| `category-tor-exit` | IP | Tor 出口节点 | ⚠️ 争议性 |
+| `category-brute-force` | IP | 暴力破解攻击源 IP | ⚡ 高波动 |
+| `category-torrent` | Domain | 盗版种子站点（已排除合法站点） | ⚠️ 争议性、大型 |
+| `category-torrent-legal` | Domain | 合法种子服务（Linux 发行版、归档站、FOSS） | – |
+| `category-torrent-announce` | IP + Domain | BitTorrent Tracker Announce 服务器 | ⚠️ 争议性 |
+| `category-dga` | Domain | 恶意软件 DGA 生成域名 | ⚠️ 高误报、大型 |
+
+#### 标记说明
+
+| 标记 | 含义 |
+|------|------|
+| `high_false_positive` | 可能误拦合法流量，部署前请审查。 |
+| `high_volatility` | 列表变化频繁，IP 可能被重新分配给合法用户。 |
+| `controversial` | 根据使用场景，封锁存在合理的反对意见。 |
+| `large_dataset` | 条目数量大，可能影响路由性能。 |
+
+#### 聚合包
+
+- **`category-bundle-strict-*`** — 仅包含无 `high_false_positive` 和 `large_dataset` 标记的类别。适用于大多数部署。
+- **`category-bundle-full-*`** — 所有类别，包括 DGA 等高噪声数据集。
+
+### 数据源
+
+| 数据源 | URL |
+|--------|-----|
+| Feodo Tracker (abuse.ch) | https://feodotracker.abuse.ch |
+| URLhaus (abuse.ch) | https://urlhaus.abuse.ch |
+| ThreatFox (abuse.ch) | https://threatfox.abuse.ch |
+| Emerging Threats | https://rules.emergingthreats.net |
+| Spamhaus DROP/EDROP | https://www.spamhaus.org/drop/ |
+| Tor Project | https://check.torproject.org/torbulkexitlist |
+| blocklist.de | https://www.blocklist.de |
+| OpenPhish | https://openphish.com |
+| brakmic/Sinkholes | https://github.com/brakmic/Sinkholes |
+| CERT.PL Sinkhole | https://hole.cert.pl |
+| Bambenek DGA feed | https://bambenekconsulting.com |
+| blocklistproject Torrent | https://github.com/blocklistproject/Lists |
+| hagezi Anti-Piracy | https://github.com/hagezi/dns-blocklists |
+| ngosang Trackers | https://github.com/ngosang/trackerslist |
+
+### 测试
+
+每次构建运行 `scripts/test.py` 验证所有输出文件：
+
+- `.dat` 文件存在且达到最小预期大小
+- `.db`（MMDB）具有有效的 MaxMind 元数据结构
+- `.srs` 文件可被 sing-box 成功反编译
+- `.txt` 文件仅包含有效的 IP/域名
+- 每个源类别都有对应的输出文件
+- txt/srs 条目数量一致
+
+```bash
+# 测试当前构建输出
+python scripts/test.py
+
+# 测试下载到其他目录的发布版本
+python scripts/test.py /path/to/release-dir
+```
+
+发布目录需具有以下结构：`output/`、`output/srs/`、`output/txt/`、`sources/`，以及可选的 `tools/sing-box`。
+
+### 更新计划
+
+通过 GitHub Actions 每天 **03:00 UTC** 自动重新构建。
+
+### Telegram 机器人
+
+订阅 [@abuse_geodata_bot](https://t.me/abuse_geodata_bot) 以获取新版本通知，包含各类别统计信息和与上次构建的差异。
 
 ---
 

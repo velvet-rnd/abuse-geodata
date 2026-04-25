@@ -61,9 +61,9 @@ def tag_name(category_name: str) -> str:
 def copy_txt(cats: list[dict]) -> None:
     print("\n[txt] copying normalized lists")
     for f in DATA_DIR.glob("category-*.txt"):
-        dst = TXT_DIR / f.name
+        dst = TXT_DIR / f"abuse-{f.name}"
         shutil.copy2(f, dst)
-        print(f"  {f.name}")
+        print(f"  abuse-{f.name}")
 
 
 def build_geodat(
@@ -116,19 +116,19 @@ def build_geodat(
     config["output"].append({
         "type": output_type,
         "action": "output",
-        "args": {"outputDir": str(OUTPUT_DIR), "outputName": output_name},
+        "args": {"outputDir": str(OUTPUT_DIR), "outputName": f"abuse-{output_name}"},
     })
     for extra in (extra_outputs or []):
         config["output"].append(extra)
 
-    cfg_path = OUTPUT_DIR / f"{output_name}-config.json"
+    cfg_path = OUTPUT_DIR / f"abuse-{output_name}-config.json"
     cfg_path.write_text(json.dumps(config, indent=2))
 
     result = run([str(geoip_bin), "convert", "--config", str(cfg_path)], cwd=ROOT, check=False)
     if result.returncode != 0:
         print(f"  ERROR: {result.stderr}", file=sys.stderr)
     else:
-        out_files = [output_name] + [e["args"]["outputName"] for e in (extra_outputs or [])]
+        out_files = [f"abuse-{output_name}"] + [e["args"]["outputName"] for e in (extra_outputs or [])]
         print(f"  OK → {', '.join('output/' + f for f in out_files)}")
 
 
@@ -161,13 +161,13 @@ def build_geosite(cats: list[dict]) -> None:
             [str(dlc_bin),
              "--datapath", str(datadir),
              "--outputdir", str(OUTPUT_DIR),
-             "--outputname", "geosite.dat"],
+             "--outputname", "abuse-geosite.dat"],
             check=False,
         )
         if result.returncode != 0:
             print(f"  ERROR: {result.stderr}", file=sys.stderr)
         else:
-            print("  OK → output/geosite.dat")
+            print("  OK → output/abuse-geosite.dat")
 
 
 def build_srs(cats: list[dict]) -> None:
@@ -222,7 +222,7 @@ def build_srs(cats: list[dict]) -> None:
 
                 _compile_srs(
                     singbox_bin, tmp,
-                    srs_name=f"{name}{suffix}",
+                    srs_name=f"abuse-{name}{suffix}",
                     rule_key=rule_key,
                     entries=entries,
                 )
@@ -239,7 +239,7 @@ def build_srs(cats: list[dict]) -> None:
                     continue
                 _compile_srs(
                     singbox_bin, tmp,
-                    srs_name=f"category-bundle{bundle_suffix}-{ext}",
+                    srs_name=f"abuse-category-bundle{bundle_suffix}-{ext}",
                     rule_key=rule_key,
                     entries=entries,
                 )
@@ -272,8 +272,8 @@ def _compile_srs(
 
 def verify_outputs() -> bool:
     required = [
-        OUTPUT_DIR / "geoip.dat",
-        OUTPUT_DIR / "geosite.dat",
+        OUTPUT_DIR / "abuse-geoip.dat",
+        OUTPUT_DIR / "abuse-geosite.dat",
     ]
     missing = [f for f in required if not f.exists()]
     if missing:
@@ -296,7 +296,7 @@ def main():
         extra_outputs=[{
             "type": "maxmindMMDB",
             "action": "output",
-            "args": {"outputDir": str(OUTPUT_DIR), "outputName": "geoip.db"},
+            "args": {"outputDir": str(OUTPUT_DIR), "outputName": "abuse-geoip.db"},
         }],
     )
 

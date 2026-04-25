@@ -69,7 +69,7 @@ def load_categories() -> list[dict]:
 
 def validate_txt_files() -> None:
     print("\n[txt] validating text lists")
-    for txt in sorted(TXT_DIR.glob("category-*.txt")):
+    for txt in sorted(TXT_DIR.glob("abuse-category-*.txt")):
         name = txt.stem
         is_ip = name.endswith("-ip")
         lines = [l.strip() for l in txt.read_text(encoding="utf-8").splitlines() if l.strip()]
@@ -133,7 +133,7 @@ def validate_srs_files() -> None:
 
 def validate_mmdb() -> None:
     print("\n[mmdb] validating geoip.db")
-    mmdb = OUTPUT_DIR / "geoip.db"
+    mmdb = OUTPUT_DIR / "abuse-geoip.db"
     if not check_file_exists(mmdb, MIN_MMDB_SIZE):
         return
 
@@ -149,12 +149,12 @@ def validate_mmdb() -> None:
         error("geoip.db: MMDB metadata too short")
         return
 
-    print(f"  OK geoip.db: {len(data):,} bytes, MMDB structure valid")
+    print(f"  OK abuse-geoip.db: {len(data):,} bytes, MMDB structure valid")
 
 
 def validate_dat_files() -> None:
     print("\n[dat] validating .dat files")
-    for name in ("geoip.dat", "geosite.dat"):
+    for name in ("abuse-geoip.dat", "abuse-geosite.dat"):
         path = OUTPUT_DIR / name
         if check_file_exists(path, MIN_DAT_SIZE):
             size = path.stat().st_size
@@ -168,16 +168,16 @@ def validate_category_coverage(cats: list[dict]) -> None:
         cat_type = cat.get("type", "mixed")
 
         if cat_type in ("ip", "mixed"):
-            ip_txt = TXT_DIR / f"{name}-ip.txt"
-            ip_srs = SRS_DIR / f"{name}-ip.srs"
+            ip_txt = TXT_DIR / f"abuse-{name}-ip.txt"
+            ip_srs = SRS_DIR / f"abuse-{name}-ip.srs"
             if not ip_txt.exists():
                 warn(f"{name}: no IP output (txt)")
             elif not ip_srs.exists():
                 warn(f"{name}: has IP txt but no .srs")
 
         if cat_type in ("domain", "mixed"):
-            dom_txt = TXT_DIR / f"{name}-domain.txt"
-            dom_srs = SRS_DIR / f"{name}-domain.srs"
+            dom_txt = TXT_DIR / f"abuse-{name}-domain.txt"
+            dom_srs = SRS_DIR / f"abuse-{name}-domain.srs"
             if not dom_txt.exists():
                 warn(f"{name}: no domain output (txt)")
             elif not dom_srs.exists():
@@ -186,7 +186,7 @@ def validate_category_coverage(cats: list[dict]) -> None:
 
 def validate_consistency() -> None:
     print("\n[consistency] cross-checking txt ↔ srs entry counts")
-    for txt in sorted(TXT_DIR.glob("category-*.txt")):
+    for txt in sorted(TXT_DIR.glob("abuse-category-*.txt")):
         srs = SRS_DIR / f"{txt.stem}.srs"
         if not srs.exists():
             continue
