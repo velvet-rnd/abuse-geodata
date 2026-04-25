@@ -47,7 +47,7 @@ def is_valid_domain(s: str) -> bool:
 
 def extract_domain_from_url(raw: str) -> str | None:
     # strip scheme
-    raw = re.sub(r"^https?://", "", raw)
+    raw = re.sub(r"^[a-zA-Z][a-zA-Z0-9+\-.]*://", "", raw)
     # strip path, query, fragment
     raw = raw.split("/")[0].split("?")[0].split("#")[0]
     # strip port – but only if not an IPv6 address (wrapped in [])
@@ -190,12 +190,26 @@ def sort_ips(ips: list[str]) -> list[str]:
     return sorted(ips, key=key)
 
 
+def load_local(path: Path) -> str | None:
+    if not path.exists():
+        print(f"  ERROR: local file not found: {path}", file=sys.stderr)
+        return None
+    return path.read_text(encoding="utf-8")
+
+
 def process_source(src: dict) -> tuple[list[str], list[str]]:
-    content = fetch_url(src["url"])
+    fmt = src.get("format", "text")
+
+    if fmt == "local":
+        url = src["url"]
+        filename = url.removeprefix("local://")
+        content = load_local(SOURCES_DIR / filename)
+    else:
+        content = fetch_url(src["url"])
+
     if content is None:
         return [], []
 
-    fmt = src.get("format", "text")
     extract = src.get("extract")
     type_override = src.get("type_override")
     comment_char = src.get("comment_char", "#")
@@ -203,7 +217,7 @@ def process_source(src: dict) -> tuple[list[str], list[str]]:
     separator = src.get("separator")
     filter_re = src.get("filter")
 
-    if fmt == "text":
+    if fmt in ("text", "local"):
         entries = parse_text(
             content, comment_char=comment_char, extract=extract, field=field,
             separator=separator,
@@ -245,6 +259,20 @@ def process_category(path: Path) -> tuple[str, int]:
         print(f"    +{len(ips)} IPs, +{len(domains)} domains")
         all_ips.update(ips)
         all_domains.update(domains)
+
+    exclude_file = cfg.get("exclude_from")
+    if exclude_file:
+        exc_path = SOURCES_DIR / exclude_file
+        exc_content = load_local(exc_path)
+        if exc_content:
+            exc_entries = set(parse_text(exc_content))
+            removed_ips = all_ips & exc_entries
+            removed_domains = all_domains & exc_entries
+            all_ips -= exc_entries
+            all_domains -= exc_entries
+            excluded = len(removed_ips) + len(removed_domains)
+            if excluded:
+                print(f"  excluded {excluded} entries via {exclude_file}")
 
     if all_ips and cat_type in ("ip", "mixed"):
         out = DATA_DIR / f"{name}-ip.txt"

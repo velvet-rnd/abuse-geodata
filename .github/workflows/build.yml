@@ -126,7 +126,14 @@ jobs:
         id: body
         run: |
           BODY=$(python3 -c "
-          import pathlib
+          import pathlib, yaml
+
+          descs = {}
+          for yf in sorted(pathlib.Path('sources').glob('category-*.yml')):
+              cfg = yaml.safe_load(yf.read_text())
+              cat_name = cfg['name'].replace('category-', '')
+              d = cfg.get('description', {})
+              descs[cat_name] = d.get('en', '') if isinstance(d, dict) else str(d)
 
           cats = {}
           for f in sorted(pathlib.Path('data').glob('category-*.txt')):
@@ -143,20 +150,21 @@ jobs:
           lines.append('')
           lines.append('## Stats')
           lines.append('')
-          lines.append('| Category | IPs | Domains |')
-          lines.append('|----------|-----|---------|')
+          lines.append('| Category | Description | IPs | Domains |')
+          lines.append('|----------|-------------|-----|---------|')
           total_ip = 0
           total_domain = 0
           for name, counts in sorted(cats.items()):
               label = name.replace('category-', '')
+              desc = descs.get(label, '')
               ip = counts['ip']
               domain = counts['domain']
               total_ip += ip
               total_domain += domain
               ip_s = f'{ip:,}' if ip else '—'
               domain_s = f'{domain:,}' if domain else '—'
-              lines.append(f'| {label} | {ip_s} | {domain_s} |')
-          lines.append(f'| **Total** | **{total_ip:,}** | **{total_domain:,}** |')
+              lines.append(f'| {label} | {desc} | {ip_s} | {domain_s} |')
+          lines.append(f'| **Total** | | **{total_ip:,}** | **{total_domain:,}** |')
           lines.append('')
           lines.append('## Files')
           lines.append('')
@@ -200,21 +208,28 @@ jobs:
           REPO_URL="${{ github.server_url }}/${{ github.repository }}"
           TAG="${{ steps.tag.outputs.tag }}"
           STATS=$(python3 -c "
-          import json, pathlib
+          import json, pathlib, yaml
           stats = {}
           for f in sorted(pathlib.Path('data').glob('category-*.txt')):
               count = sum(1 for line in f.read_text().splitlines() if line.strip())
               stats[f.stem] = count
-          print(json.dumps(stats))
+          descs = {}
+          for yf in sorted(pathlib.Path('sources').glob('category-*.yml')):
+              cfg = yaml.safe_load(yf.read_text())
+              cat_name = cfg['name'].replace('category-', '')
+              d = cfg.get('description', {})
+              descs[cat_name] = d.get('en', '') if isinstance(d, dict) else str(d)
+          print(json.dumps({'stats': stats, 'descriptions': descs}))
           ")
           PAYLOAD=$(python3 -c "
           import json, sys
-          stats = json.loads(sys.argv[1])
+          data = json.loads(sys.argv[1])
           print(json.dumps({
               'type': 'release',
               'tag': sys.argv[2],
               'url': f'{sys.argv[3]}/releases/tag/{sys.argv[2]}',
-              'stats': stats
+              'stats': data['stats'],
+              'descriptions': data['descriptions']
           }))
           " "$STATS" "$TAG" "$REPO_URL")
           curl -sf -X POST "${BOT_API_URL}/api/notify" \

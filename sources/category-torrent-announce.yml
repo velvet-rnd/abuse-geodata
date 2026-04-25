@@ -1,0 +1,38 @@
+name: category-torrent-announce
+type: mixed
+description:
+  ru: "IP-адреса и домены BitTorrent announce-серверов (трекеров)"
+  en: "IPs and domains of BitTorrent announce servers (trackers)"
+
+flags:
+  high_false_positive:
+    value: false
+    description:
+      ru: "Только верифицированные активные трекеры"
+      en: "Only verified active trackers"
+  high_volatility:
+    value: false
+    description:
+      ru: "Список трекеров относительно стабилен"
+      en: "Tracker list is relatively stable"
+  controversial:
+    value: true
+    description:
+      ru: "Блокировка трекеров предотвращает все торренты, включая легитимные"
+      en: "Blocking trackers prevents all torrents, including legitimate ones"
+  large_dataset:
+    value: false
+    description:
+      ru: "Небольшой список (~100 записей)"
+      en: "Small list (~100 entries)"
+
+sources:
+  - name: ngosang-trackers-domain
+    url: https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt
+    format: text
+    extract: domain
+
+  - name: ngosang-trackers-ip
+    url: https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_ip.txt
+    format: text
+    extract: domain

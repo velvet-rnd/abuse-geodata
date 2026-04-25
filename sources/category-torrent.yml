@@ -1,0 +1,38 @@
+name: category-torrent
+type: domain
+description:
+  ru: "Домены торрент-сайтов и P2P-ресурсов для нелегального распространения контента"
+  en: "Torrent site and P2P resource domains used for illegal content distribution"
+
+flags:
+  high_false_positive:
+    value: false
+    description:
+      ru: "Списки курируются, легитимные ресурсы исключены"
+      en: "Lists are curated, legitimate resources excluded"
+  high_volatility:
+    value: false
+    description:
+      ru: "Торрент-сайты стабильны, зеркала добавляются по мере появления"
+      en: "Torrent sites are stable, mirrors added as they appear"
+  controversial:
+    value: true
+    description:
+      ru: "Блокировка торрент-сайтов спорна — торренты имеют легитимное применение"
+      en: "Blocking torrent sites is debatable — torrents have legitimate uses"
+  large_dataset:
+    value: true
+    description:
+      ru: "~15K доменов. Может влиять на производительность роутинга."
+      en: "~15K domains. May affect routing performance."
+
+exclude_from: torrent-legal-domains.txt
+
+sources:
+  - name: blocklistproject-torrent
+    url: https://raw.githubusercontent.com/blocklistproject/Lists/master/torrent.txt
+    format: hosts
+
+  - name: hagezi-anti-piracy
+    url: https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/anti.piracy-onlydomains.txt
+    format: text

@@ -1,0 +1,33 @@
+name: category-torrent-legal
+type: domain
+description:
+  ru: "Домены легитимных торрент-сервисов: Linux-дистрибутивы, архивы, академические данные, FOSS"
+  en: "Legitimate torrent service domains: Linux distros, archives, academic data, FOSS"
+
+flags:
+  high_false_positive:
+    value: false
+    description:
+      ru: "Только верифицированные легитимные сервисы"
+      en: "Only verified legitimate services"
+  high_volatility:
+    value: false
+    description:
+      ru: "Курируемый вручную список, обновляется редко"
+      en: "Manually curated list, updated infrequently"
+  controversial:
+    value: false
+    description:
+      ru: "Легитимные сервисы, блокировка обоснована только в специфических случаях"
+      en: "Legitimate services, blocking is justified only in specific cases"
+  large_dataset:
+    value: false
+    description:
+      ru: "Небольшой курируемый список (~50 записей)"
+      en: "Small curated list (~50 entries)"
+
+sources:
+  - name: local-torrent-legal
+    url: local://torrent-legal-domains.txt
+    format: local
+    type_override: domain

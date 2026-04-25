@@ -110,6 +110,9 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 | `category-spam` | IP | Spamhaus DROP/EDROP – hijacked IP blocks | – |
 | `category-tor-exit` | IP | Tor exit nodes | ⚠️ controversial |
 | `category-brute-force` | IP | IPs conducting brute-force attacks | ⚡ volatile |
+| `category-torrent` | Domain | Torrent sites and piracy resources (legal excluded) | ⚠️ controversial, large |
+| `category-torrent-legal` | Domain | Legitimate torrent services (Linux distros, archives, FOSS) | – |
+| `category-torrent-announce` | IP + Domain | BitTorrent tracker announce servers | ⚠️ controversial |
 | `category-dga` | Domain | DGA-generated malware domains | ⚠️ high FP, large |
 
 #### Flag legend
@@ -141,6 +144,9 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 | brakmic/Sinkholes | https://github.com/brakmic/Sinkholes |
 | CERT.PL Sinkhole | https://hole.cert.pl |
 | Bambenek DGA feed | https://bambenekconsulting.com |
+| blocklistproject Torrent | https://github.com/blocklistproject/Lists |
+| hagezi Anti-Piracy | https://github.com/hagezi/dns-blocklists |
+| ngosang Trackers | https://github.com/ngosang/trackerslist |
 
 ### Testing
 
@@ -274,6 +280,9 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 | `category-spam` | IP | Spamhaus DROP/EDROP – захваченные спамерами блоки | – |
 | `category-tor-exit` | IP | Exit-ноды сети Tor | ⚠️ спорный |
 | `category-brute-force` | IP | IP-адреса, ведущие брутфорс-атаки | ⚡ волатильный |
+| `category-torrent` | Domain | Торрент-сайты и пиратские ресурсы (без легальных) | ⚠️ спорный, большой |
+| `category-torrent-legal` | Domain | Легитимные торрент-сервисы (Linux-дистрибутивы, архивы, FOSS) | – |
+| `category-torrent-announce` | IP + Domain | Announce-серверы BitTorrent-трекеров | ⚠️ спорный |
 | `category-dga` | Domain | DGA-домены малвари | ⚠️ высокий FP, большой |
 
 #### Описание флагов
@@ -305,6 +314,9 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 | brakmic/Sinkholes | https://github.com/brakmic/Sinkholes |
 | CERT.PL Sinkhole | https://hole.cert.pl |
 | Bambenek DGA feed | https://bambenekconsulting.com |
+| blocklistproject Torrent | https://github.com/blocklistproject/Lists |
+| hagezi Anti-Piracy | https://github.com/hagezi/dns-blocklists |
+| ngosang Trackers | https://github.com/ngosang/trackerslist |
 
 ### Тестирование
 

@@ -1,0 +1,69 @@
+# Legitimate torrent-related domains
+# These domains use BitTorrent for legal content distribution
+# Curated manually — additions welcome via PR
+
+# --- Internet Archive ---
+archive.org
+bt1.archive.org
+bt2.archive.org
+
+# --- Project Gutenberg ---
+gutenberg.org
+
+# --- Academic Torrents ---
+academictorrents.com
+
+# --- FOSS Torrents ---
+fosstorrents.com
+
+# --- Linux distributions: official trackers and mirrors ---
+torrent.ubuntu.com
+ipv6.torrent.ubuntu.com
+torrent.fedoraproject.org
+linuxtracker.org
+tracker.artixlinux.org
+torrents.artixlinux.org
+mail.artixlinux.org
+tracker.parrotlinux.org
+tracker.parrotsec.org
+colibri.parrot.run
+wolf.parrot.run
+tracker.kali.org
+torrent.altlinux.org
+getalt.org
+torrent.calculatelinux.org
+tracker.rosalinux.ru
+dl.rosalinux.ru
+
+# --- Live music archive (etree) ---
+bt.etree.org
+tracker.etree.org
+
+# --- Legal torrent directories ---
+legaltorrents.com
+legaltorrent.net
+legittorrents.info
+
+# --- Mod/music archives ---
+tracker.modarchive.org
+
+# --- Universities using BitTorrent for content distribution ---
+tracker.sjtu.edu.cn
+mitworld.mit.edu
+webcast.berkeley.edu
+diva.sfsu.edu
+websites.umich.edu
+
+# --- Open BitTorrent trackers (infrastructure, not content) ---
+tracker.openbittorrent.com
+openbittorrent.com
+tracker.opentracker.se
+opentracker.cc
+opentracker.io
+tracker.openwebtorrent.com
+openwebtorrent.com
+
+# --- Other legitimate services caught in blocklists ---
+bnbteasytracker.sourceforge.net
+tornado-torrent.gitlab.io
+speeddemosarchive.com
