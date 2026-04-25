@@ -46,8 +46,7 @@ All files are published as [GitHub Releases](../../releases/latest).
         "type": "field",
         "domain": [
           "geosite:category-malware-c2",
-          "geosite:category-phishing",
-          "geosite:category-cryptojacking"
+          "geosite:category-phishing"
         ],
         "outboundTag": "block"
       }
@@ -110,7 +109,6 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 | `category-spam` | IP | Spamhaus DROP/EDROP – hijacked IP blocks | – |
 | `category-tor-exit` | IP | Tor exit nodes | ⚠️ controversial |
 | `category-brute-force` | IP | IPs conducting brute-force attacks | ⚡ volatile |
-| `category-cryptojacking` | IP + Domain | Cryptomining pools used for unauthorized mining | – |
 | `category-dga` | Domain | DGA-generated malware domains | ⚠️ high FP, large |
 
 #### Flag legend
@@ -214,8 +212,7 @@ Subscribe to [@abuse_geodata_bot](https://t.me/abuse_geodata_bot) to get notific
         "type": "field",
         "domain": [
           "geosite:category-malware-c2",
-          "geosite:category-phishing",
-          "geosite:category-cryptojacking"
+          "geosite:category-phishing"
         ],
         "outboundTag": "block"
       }
@@ -273,7 +270,6 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 | `category-spam` | IP | Spamhaus DROP/EDROP – захваченные спамерами блоки | – |
 | `category-tor-exit` | IP | Exit-ноды сети Tor | ⚠️ спорный |
 | `category-brute-force` | IP | IP-адреса, ведущие брутфорс-атаки | ⚡ волатильный |
-| `category-cryptojacking` | IP + Domain | Майнинг-пулы для несанкционированного майнинга | – |
 | `category-dga` | Domain | DGA-домены малвари | ⚠️ высокий FP, большой |
 
 #### Описание флагов
