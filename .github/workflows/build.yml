@@ -134,9 +134,9 @@ jobs:
           TEST_OUTPUT: ${{ steps.test.outputs.output }}
         run: |
           if [ "${{ steps.test.outcome }}" = "success" ]; then
-            PASSED="true"
+            export PASSED="true"
           else
-            PASSED="false"
+            export PASSED="false"
           fi
           python3 -c "
           import json, os
