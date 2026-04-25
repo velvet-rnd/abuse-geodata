@@ -15,14 +15,14 @@ Built daily from public abuse feeds. Designed for VPN operators, hosting provide
 All files are published as [GitHub Releases](../../releases/latest).
 
 | File | Format | Use case |
-|------|--------|----------|
-| `abuse-geoip.dat` | Xray/V2Ray | `ext:abuse-geoip.dat:category-*` routing rules |
-| `abuse-geosite.dat` | Xray/V2Ray | `ext:abuse-geosite.dat:category-*` routing rules |
-| `abuse-geoip.db` | MaxMind MMDB | sing-box `geoip` rules |
+|:-----|:-------|:---------|
+| `abuse-geoip.dat` | Xray/V2Ray | `ext:abuse-geoip.dat:category-*` rules |
+| `abuse-geosite.dat` | Xray/V2Ray | `ext:abuse-geosite.dat:category-*` rules |
+| `abuse-geoip.db` | MaxMind MMDB | sing-box geoip rules |
 | `abuse-category-*.srs` | sing-box | Per-category rule-sets |
-| `abuse-category-bundle-strict-*.srs` | sing-box | Aggregated stable categories only |
-| `abuse-category-bundle-full-*.srs` | sing-box | All categories including noisy |
-| `abuse-category-*.txt` | Plain text | ipset, hosts file, custom scripts |
+| `abuse-category-bundle-strict-*.srs` | sing-box | Stable categories only |
+| `abuse-category-bundle-full-*.srs` | sing-box | All categories |
+| `abuse-category-*.txt` | Plain text | ipset, hosts, scripts |
 
 ### Usage
 
@@ -102,7 +102,7 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 ### Categories
 
 | Category | Type | Description | Flags |
-|----------|------|-------------|-------|
+|:---------|:-----|:------------|:------|
 | `category-sinkhole` | IP | Known sinkhole IPs operated by security researchers | – |
 | `category-sinkhole-domain` | Domain | Sinkhole domains seized by CERT.PL | ⚠️ large |
 | `category-malware-c2` | IP + Domain | Malware C2 servers (botnets, ransomware, trojans) | – |
@@ -118,7 +118,7 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 #### Flag legend
 
 | Flag | Meaning |
-|------|---------|
+|:-----|:--------|
 | `high_false_positive` | Legitimate traffic may be blocked. Review before deploying. |
 | `high_volatility` | List changes rapidly. IPs may be reassigned to legitimate users. |
 | `controversial` | Blocking has valid counter-arguments depending on use case. |
@@ -132,7 +132,7 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 ### Sources
 
 | Source | URL |
-|--------|-----|
+|:-------|:----|
 | Feodo Tracker (abuse.ch) | https://feodotracker.abuse.ch |
 | URLhaus (abuse.ch) | https://urlhaus.abuse.ch |
 | ThreatFox (abuse.ch) | https://threatfox.abuse.ch |
@@ -190,14 +190,14 @@ Subscribe to [@abuse_geodata_bot](https://t.me/abuse_geodata_bot) to get notific
 Все файлы публикуются в [GitHub Releases](../../releases/latest).
 
 | Файл | Формат | Применение |
-|------|--------|------------|
-| `abuse-geoip.dat` | Xray/V2Ray | Правила роутинга `ext:abuse-geoip.dat:category-*` |
-| `abuse-geosite.dat` | Xray/V2Ray | Правила роутинга `ext:abuse-geosite.dat:category-*` |
-| `abuse-geoip.db` | MaxMind MMDB | Правила `geoip` в sing-box |
+|:-----|:-------|:-----------|
+| `abuse-geoip.dat` | Xray/V2Ray | Правила `ext:abuse-geoip.dat:category-*` |
+| `abuse-geosite.dat` | Xray/V2Ray | Правила `ext:abuse-geosite.dat:category-*` |
+| `abuse-geoip.db` | MaxMind MMDB | sing-box geoip правила |
 | `abuse-category-*.srs` | sing-box | Rule-set на каждую категорию |
-| `abuse-category-bundle-strict-*.srs` | sing-box | Агрегат – только стабильные категории |
-| `abuse-category-bundle-full-*.srs` | sing-box | Агрегат – все категории включая шумные |
-| `abuse-category-*.txt` | Обычный текст | ipset, hosts-файл, кастомные скрипты |
+| `abuse-category-bundle-strict-*.srs` | sing-box | Только стабильные категории |
+| `abuse-category-bundle-full-*.srs` | sing-box | Все категории |
+| `abuse-category-*.txt` | Текст | ipset, hosts, скрипты |
 
 ### Использование
 
@@ -272,7 +272,7 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 ### Категории
 
 | Категория | Тип | Описание | Флаги |
-|-----------|-----|----------|-------|
+|:----------|:----|:---------|:------|
 | `category-sinkhole` | IP | Известные sinkhole IP исследователей безопасности | – |
 | `category-sinkhole-domain` | Domain | Sinkhole-домены, перехваченные CERT.PL | ⚠️ большой |
 | `category-malware-c2` | IP + Domain | C2-серверы малвари (ботнеты, ransomware, трояны) | – |
@@ -288,7 +288,7 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 #### Описание флагов
 
 | Флаг | Значение |
-|------|----------|
+|:-----|:---------|
 | `high_false_positive` | Возможна блокировка легитимного трафика. Проверь перед деплоем. |
 | `high_volatility` | Список меняется часто. IP могут быть переназначены легитимным пользователям. |
 | `controversial` | У блокировки есть весомые контраргументы в зависимости от контекста использования. |
@@ -302,7 +302,7 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 ### Источники
 
 | Источник | URL |
-|----------|-----|
+|:---------|:----|
 | Feodo Tracker (abuse.ch) | https://feodotracker.abuse.ch |
 | URLhaus (abuse.ch) | https://urlhaus.abuse.ch |
 | ThreatFox (abuse.ch) | https://threatfox.abuse.ch |
@@ -360,14 +360,14 @@ python scripts/test.py /path/to/release-dir
 所有文件发布在 [GitHub Releases](../../releases/latest)。
 
 | 文件 | 格式 | 用途 |
-|------|------|------|
-| `abuse-geoip.dat` | Xray/V2Ray | `ext:abuse-geoip.dat:category-*` 路由规则 |
-| `abuse-geosite.dat` | Xray/V2Ray | `ext:abuse-geosite.dat:category-*` 路由规则 |
-| `abuse-geoip.db` | MaxMind MMDB | sing-box `geoip` 规则 |
+|:-----|:-----|:-----|
+| `abuse-geoip.dat` | Xray/V2Ray | `ext:abuse-geoip.dat:category-*` 规则 |
+| `abuse-geosite.dat` | Xray/V2Ray | `ext:abuse-geosite.dat:category-*` 规则 |
+| `abuse-geoip.db` | MaxMind MMDB | sing-box geoip 规则 |
 | `abuse-category-*.srs` | sing-box | 按类别的规则集 |
-| `abuse-category-bundle-strict-*.srs` | sing-box | 仅包含稳定类别的聚合集 |
-| `abuse-category-bundle-full-*.srs` | sing-box | 包含所有类别（含高噪声） |
-| `abuse-category-*.txt` | 纯文本 | ipset、hosts 文件、自定义脚本 |
+| `abuse-category-bundle-strict-*.srs` | sing-box | 仅稳定类别 |
+| `abuse-category-bundle-full-*.srs` | sing-box | 所有类别 |
+| `abuse-category-*.txt` | 纯文本 | ipset、hosts、脚本 |
 
 ### 使用方法
 
@@ -442,7 +442,7 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 ### 类别
 
 | 类别 | 类型 | 说明 | 标记 |
-|------|------|------|------|
+|:-----|:-----|:-----|:-----|
 | `category-sinkhole` | IP | 安全研究人员运营的已知 sinkhole 服务器 | – |
 | `category-sinkhole-domain` | Domain | CERT.PL 接管的 sinkhole 域名 | ⚠️ 大型 |
 | `category-malware-c2` | IP + Domain | 恶意软件 C2 服务器（僵尸网络、勒索软件、木马） | – |
@@ -458,7 +458,7 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 #### 标记说明
 
 | 标记 | 含义 |
-|------|------|
+|:-----|:-----|
 | `high_false_positive` | 可能误拦合法流量，部署前请审查。 |
 | `high_volatility` | 列表变化频繁，IP 可能被重新分配给合法用户。 |
 | `controversial` | 根据使用场景，封锁存在合理的反对意见。 |
@@ -472,7 +472,7 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 ### 数据源
 
 | 数据源 | URL |
-|--------|-----|
+|:-------|:----|
 | Feodo Tracker (abuse.ch) | https://feodotracker.abuse.ch |
 | URLhaus (abuse.ch) | https://urlhaus.abuse.ch |
 | ThreatFox (abuse.ch) | https://threatfox.abuse.ch |

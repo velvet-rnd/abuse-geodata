@@ -116,7 +116,41 @@ jobs:
         run: python scripts/build.py
 
       - name: Test outputs
-        run: python scripts/test.py
+        id: test
+        run: |
+          OUTPUT=$(python scripts/test.py 2>&1) || true
+          echo "$OUTPUT"
+          echo "output<<EOFTEST" >> "$GITHUB_OUTPUT"
+          echo "$OUTPUT" >> "$GITHUB_OUTPUT"
+          echo "EOFTEST" >> "$GITHUB_OUTPUT"
+          echo "$OUTPUT" | grep -q "^FAILED" && exit 1 || true
+
+      - name: Notify bot — test results
+        if: ${{ always() && vars.BOT_API_URL != '' && steps.test.outputs.output != '' }}
+        continue-on-error: true
+        env:
+          BOT_API_URL: ${{ vars.BOT_API_URL }}
+          BOT_API_SECRET: ${{ secrets.BOT_API_SECRET }}
+          TEST_OUTPUT: ${{ steps.test.outputs.output }}
+        run: |
+          if [ "${{ steps.test.outcome }}" = "success" ]; then
+            PASSED="true"
+          else
+            PASSED="false"
+          fi
+          python3 -c "
+          import json, os
+          with open('/tmp/test-payload.json', 'w') as f:
+              json.dump({
+                  'type': 'test_result',
+                  'passed': os.environ.get('PASSED') == 'true',
+                  'output': os.environ.get('TEST_OUTPUT', '')
+              }, f)
+          "
+          curl -sf -X POST "${BOT_API_URL}/api/notify" \
+            -H "Authorization: Bearer ${BOT_API_SECRET}" \
+            -H "Content-Type: application/json" \
+            -d @/tmp/test-payload.json
 
       - name: Generate release tag
         id: tag
@@ -151,7 +185,7 @@ jobs:
           lines.append('## Stats')
           lines.append('')
           lines.append('| Category | Description | IPs | Domains |')
-          lines.append('|----------|-------------|-----|---------|')
+          lines.append('|:---------|:------------|:----|:--------|')
           total_ip = 0
           total_domain = 0
           for name, counts in sorted(cats.items()):
@@ -169,7 +203,7 @@ jobs:
           lines.append('## Files')
           lines.append('')
           lines.append('| File | Description |')
-          lines.append('|------|-------------|')
+          lines.append('|:-----|:------------|')
           lines.append('| \`abuse-geoip.dat\` | Xray/V2Ray geoip database |')
           lines.append('| \`abuse-geosite.dat\` | Xray/V2Ray geosite database |')
           lines.append('| \`abuse-geoip.db\` | sing-box MaxMind MMDB |')
