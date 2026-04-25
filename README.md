@@ -141,6 +141,27 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 | brakmic/Sinkholes | https://github.com/brakmic/Sinkholes |
 | Bambenek DGA feed | https://bambenekconsulting.com |
 
+### Testing
+
+Each build runs `scripts/test.py` to validate all output files:
+
+- `.dat` files exist and have minimum expected size
+- `.db` (MMDB) has valid MaxMind metadata structure
+- `.srs` files decompile successfully with sing-box
+- `.txt` files contain only valid IPs/domains
+- Every source category has corresponding output files
+- txt/srs entry counts are consistent
+
+```bash
+# test current build output
+python scripts/test.py
+
+# test a downloaded release in another directory
+python scripts/test.py /path/to/release-dir
+```
+
+The release directory should have the same structure: `output/`, `output/srs/`, `output/txt/`, `sources/`, and optionally `tools/sing-box`.
+
 ### Update schedule
 
 Rebuilt automatically every day at **03:00 UTC** via GitHub Actions.
@@ -282,6 +303,27 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 | OpenPhish | https://openphish.com |
 | brakmic/Sinkholes | https://github.com/brakmic/Sinkholes |
 | Bambenek DGA feed | https://bambenekconsulting.com |
+
+### Тестирование
+
+Каждый билд запускает `scripts/test.py` для валидации всех выходных файлов:
+
+- `.dat` файлы существуют и имеют минимальный ожидаемый размер
+- `.db` (MMDB) имеет валидную структуру метаданных MaxMind
+- `.srs` файлы успешно декомпилируются sing-box
+- `.txt` файлы содержат только валидные IP/домены
+- Каждая категория из sources имеет соответствующие выходные файлы
+- Количество записей в txt и srs консистентно
+
+```bash
+# тест текущего билда
+python scripts/test.py
+
+# тест скачанного релиза в другой директории
+python scripts/test.py /path/to/release-dir
+```
+
+Директория релиза должна иметь структуру: `output/`, `output/srs/`, `output/txt/`, `sources/`, и опционально `tools/sing-box`.
 
 ### Расписание обновлений
 

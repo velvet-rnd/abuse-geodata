@@ -115,20 +115,8 @@ jobs:
       - name: Build outputs
         run: python scripts/build.py
 
-      - name: Verify outputs
-        run: |
-          echo "=== Output files ==="
-          find output/ -type f | sort | while read f; do
-            size=$(wc -c < "$f")
-            echo "  $f ($size bytes)"
-          done
-          # fail if critical files are missing
-          for f in output/geoip.dat output/geosite.dat; do
-            if [ ! -f "$f" ]; then
-              echo "ERROR: $f is missing" >&2
-              exit 1
-            fi
-          done
+      - name: Test outputs
+        run: python scripts/test.py
 
       - name: Generate release tag
         id: tag

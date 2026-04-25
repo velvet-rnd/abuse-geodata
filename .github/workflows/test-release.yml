@@ -1,0 +1,95 @@
+name: Test Release
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python deps
+        run: pip install -r requirements.txt
+
+      - name: Download latest release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p output/srs output/txt
+          gh release download --repo ${{ github.repository }} --clobber
+          mv *.dat *.db output/ 2>/dev/null || true
+          mv *.srs output/srs/ 2>/dev/null || true
+          mv *.txt output/txt/ 2>/dev/null || true
+          echo "=== Downloaded files ==="
+          find output/ -type f | sort | while read f; do
+            size=$(wc -c < "$f")
+            echo "  $f ($size bytes)"
+          done
+
+      - name: Download sing-box
+        run: |
+          mkdir -p tools
+          SINGBOX_VERSION=$(curl -sL \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/SagerNet/sing-box/releases/latest \
+            | jq -r '.tag_name')
+          SINGBOX_VERSION_CLEAN="${SINGBOX_VERSION#v}"
+          echo "sing-box version: ${SINGBOX_VERSION}"
+          curl -sL "https://github.com/SagerNet/sing-box/releases/download/${SINGBOX_VERSION}/sing-box-${SINGBOX_VERSION_CLEAN}-linux-amd64.tar.gz" \
+            -o tools/sing-box.tar.gz
+          tar -xzf tools/sing-box.tar.gz -C tools/ --strip-components=1 \
+            --wildcards "*/sing-box"
+          chmod +x tools/sing-box
+          tools/sing-box version
+
+      - name: Test release
+        id: test
+        run: |
+          OUTPUT=$(python scripts/test.py 2>&1) || true
+          echo "$OUTPUT"
+          echo "output<<EOFTEST" >> "$GITHUB_OUTPUT"
+          echo "$OUTPUT" >> "$GITHUB_OUTPUT"
+          echo "EOFTEST" >> "$GITHUB_OUTPUT"
+          # set exit code based on output
+          echo "$OUTPUT" | grep -q "^FAILED" && exit 1 || true
+
+      - name: Notify bot
+        if: ${{ always() && vars.BOT_API_URL != '' }}
+        continue-on-error: true
+        env:
+          BOT_API_URL: ${{ vars.BOT_API_URL }}
+          BOT_API_SECRET: ${{ secrets.BOT_API_SECRET }}
+        run: |
+          PASSED="true"
+          if [ "${{ job.status }}" != "success" ]; then
+            PASSED="false"
+          fi
+          PAYLOAD=$(python3 -c "
+          import json, sys
+          print(json.dumps({
+              'type': 'test_result',
+              'passed': sys.argv[1] == 'true',
+              'output': sys.argv[2]
+          }))
+          " "$PASSED" "${{ steps.test.outputs.output }}")
+          curl -sf -X POST "${BOT_API_URL}/api/notify" \
+            -H "Authorization: Bearer ${BOT_API_SECRET}" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD"
