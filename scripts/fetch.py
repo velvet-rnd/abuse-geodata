@@ -303,6 +303,9 @@ def main():
         else:
             status[name] = status.get(name, 0) + 1
 
+    active = {path.stem for path in yml_files}
+    status = {k: v for k, v in status.items() if k in active}
+
     save_status(status)
     check_stale(status)
 
