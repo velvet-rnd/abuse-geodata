@@ -124,7 +124,7 @@ def build_geodat(
     cfg_path = OUTPUT_DIR / f"{output_name}-config.json"
     cfg_path.write_text(json.dumps(config, indent=2))
 
-    result = run([str(geoip_bin), "--config", str(cfg_path)], cwd=ROOT, check=False)
+    result = run([str(geoip_bin), "convert", "--config", str(cfg_path)], cwd=ROOT, check=False)
     if result.returncode != 0:
         print(f"  ERROR: {result.stderr}", file=sys.stderr)
     else:
