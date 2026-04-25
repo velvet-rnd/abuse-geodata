@@ -31,6 +31,11 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "stable"
+
       - name: Install Python deps
         run: pip install -r requirements.txt
 
@@ -47,27 +52,14 @@ jobs:
           key: data-${{ github.run_id }}
           restore-keys: data-
 
-      - name: Download geoip builder (Loyalsoldier/geoip)
+      - name: Build geoip tool (Loyalsoldier/geoip)
         run: |
           if [ -f tools/geoip ]; then echo "cached"; exit 0; fi
           mkdir -p tools
-          GEOIP_VERSION=$(curl -sL \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/Loyalsoldier/geoip/releases/latest \
-            | jq -r '.tag_name')
-          echo "geoip version: ${GEOIP_VERSION}"
-          curl -sL "https://github.com/Loyalsoldier/geoip/releases/download/${GEOIP_VERSION}/linux-amd64-geoip.zip" \
-            -o tools/geoip.zip
-          unzip -q tools/geoip.zip -d tools/
-          GEOIP_BIN=$(find tools/ -maxdepth 1 -type f -name "*geoip*" ! -name "*.zip" | head -1)
-          if [ -z "$GEOIP_BIN" ]; then
-            echo "ERROR: geoip binary not found after unzip" >&2
-            ls -la tools/
-            exit 1
-          fi
-          mv "$GEOIP_BIN" tools/geoip
-          chmod +x tools/geoip
-          tools/geoip --version || true
+          git clone --depth 1 https://github.com/Loyalsoldier/geoip.git /tmp/geoip-src
+          cd /tmp/geoip-src
+          go build -o $GITHUB_WORKSPACE/tools/geoip .
+          echo "geoip built: $($GITHUB_WORKSPACE/tools/geoip 2>&1 | head -1 || true)"
 
       - name: Download sing-box
         run: |
