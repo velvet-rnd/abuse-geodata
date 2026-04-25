@@ -104,6 +104,7 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 | Category | Type | Description | Flags |
 |----------|------|-------------|-------|
 | `category-sinkhole` | IP | Known sinkhole IPs operated by security researchers | – |
+| `category-sinkhole-domain` | Domain | Sinkhole domains seized by CERT.PL | ⚠️ large |
 | `category-malware-c2` | IP + Domain | Malware C2 servers (botnets, ransomware, trojans) | – |
 | `category-phishing` | Domain | Phishing domains | ⚡ volatile |
 | `category-spam` | IP | Spamhaus DROP/EDROP – hijacked IP blocks | – |
@@ -131,12 +132,14 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 |--------|-----|
 | Feodo Tracker (abuse.ch) | https://feodotracker.abuse.ch |
 | URLhaus (abuse.ch) | https://urlhaus.abuse.ch |
+| ThreatFox (abuse.ch) | https://threatfox.abuse.ch |
 | Emerging Threats | https://rules.emergingthreats.net |
 | Spamhaus DROP/EDROP | https://www.spamhaus.org/drop/ |
 | Tor Project | https://check.torproject.org/torbulkexitlist |
 | blocklist.de | https://www.blocklist.de |
 | OpenPhish | https://openphish.com |
 | brakmic/Sinkholes | https://github.com/brakmic/Sinkholes |
+| CERT.PL Sinkhole | https://hole.cert.pl |
 | Bambenek DGA feed | https://bambenekconsulting.com |
 
 ### Testing
@@ -265,6 +268,7 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 | Категория | Тип | Описание | Флаги |
 |-----------|-----|----------|-------|
 | `category-sinkhole` | IP | Известные sinkhole IP исследователей безопасности | – |
+| `category-sinkhole-domain` | Domain | Sinkhole-домены, перехваченные CERT.PL | ⚠️ большой |
 | `category-malware-c2` | IP + Domain | C2-серверы малвари (ботнеты, ransomware, трояны) | – |
 | `category-phishing` | Domain | Фишинговые домены | ⚡ волатильный |
 | `category-spam` | IP | Spamhaus DROP/EDROP – захваченные спамерами блоки | – |
@@ -292,12 +296,14 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 |----------|-----|
 | Feodo Tracker (abuse.ch) | https://feodotracker.abuse.ch |
 | URLhaus (abuse.ch) | https://urlhaus.abuse.ch |
+| ThreatFox (abuse.ch) | https://threatfox.abuse.ch |
 | Emerging Threats | https://rules.emergingthreats.net |
 | Spamhaus DROP/EDROP | https://www.spamhaus.org/drop/ |
 | Tor Project | https://check.torproject.org/torbulkexitlist |
 | blocklist.de | https://www.blocklist.de |
 | OpenPhish | https://openphish.com |
 | brakmic/Sinkholes | https://github.com/brakmic/Sinkholes |
+| CERT.PL Sinkhole | https://hole.cert.pl |
 | Bambenek DGA feed | https://bambenekconsulting.com |
 
 ### Тестирование

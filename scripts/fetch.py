@@ -103,17 +103,39 @@ def parse_text(
     return results
 
 
-def parse_csv(content: str, column: str, extract: str = None) -> list[str]:
+def parse_csv(
+    content: str, column: str, extract: str = None,
+    filter_column: str = None, filter_value: str = None,
+) -> list[str]:
     results = []
-    reader = csv.DictReader(StringIO(content))
+    lines = content.splitlines()
+    header = None
+    data_lines = []
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if stripped.startswith("#"):
+            candidate = stripped.lstrip("# ").strip()
+            if candidate.startswith('"') and column in candidate:
+                header = candidate
+            continue
+        data_lines.append(line)
+    csv_text = (header + "\n" if header else "") + "\n".join(data_lines)
+    reader = csv.DictReader(StringIO(csv_text))
     for row in reader:
         if column not in row:
             continue
-        token = row[column].strip()
+        if filter_column and row.get(filter_column, "").strip().strip('"') != filter_value:
+            continue
+        token = row[column].strip().strip('"')
         if extract == "domain":
             domain = extract_domain_from_url(token)
             if domain:
                 results.append(domain)
+        elif extract == "ip_from_port":
+            ip = token.rsplit(":", 1)[0]
+            results.append(ip)
         else:
             results.append(token)
     return results
@@ -187,7 +209,11 @@ def process_source(src: dict) -> tuple[list[str], list[str]]:
             separator=separator,
         )
     elif fmt == "csv":
-        entries = parse_csv(content, column=src["column"], extract=extract)
+        entries = parse_csv(
+            content, column=src["column"], extract=extract,
+            filter_column=src.get("filter_column"),
+            filter_value=src.get("filter_value"),
+        )
     elif fmt == "hosts":
         entries = parse_hosts(content, filter_re=filter_re)
     else:

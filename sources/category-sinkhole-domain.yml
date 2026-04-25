@@ -1,0 +1,33 @@
+name: category-sinkhole-domain
+type: domain
+description:
+  ru: "Домены, перехваченные sinkhole-операторами (CERT.PL). Трафик к ним означает заражённого клиента."
+  en: "Domains seized by sinkhole operators (CERT.PL). Traffic to them indicates an infected client."
+
+flags:
+  high_false_positive:
+    value: false
+    description:
+      ru: "Домены перехвачены правоохранителями и CERT, легитимного трафика нет"
+      en: "Domains seized by law enforcement and CERTs, no legitimate traffic"
+  high_volatility:
+    value: false
+    description:
+      ru: "Домены перехвачены надолго, список стабилен"
+      en: "Domains are seized long-term, list is stable"
+  controversial:
+    value: false
+    description:
+      ru: "Трафик к sinkhole-доменам однозначно нежелателен"
+      en: "Traffic to sinkhole domains is unambiguously unwanted"
+  large_dataset:
+    value: true
+    description:
+      ru: "~140K доменов. Может влиять на производительность роутинга."
+      en: "~140K domains. May affect routing performance."
+
+sources:
+  - name: certpl-sinkhole-domains
+    url: https://hole.cert.pl/domains/v2/domains.txt
+    format: text
+    type_override: domain
