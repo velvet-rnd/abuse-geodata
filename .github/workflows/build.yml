@@ -61,6 +61,15 @@ jobs:
           go build -o $GITHUB_WORKSPACE/tools/geoip .
           echo "geoip built: $($GITHUB_WORKSPACE/tools/geoip 2>&1 | head -1 || true)"
 
+      - name: Build domain-list-community (geosite)
+        run: |
+          if [ -f tools/dlc ]; then echo "cached"; exit 0; fi
+          mkdir -p tools
+          git clone --depth 1 https://github.com/v2fly/domain-list-community.git /tmp/dlc-src
+          cd /tmp/dlc-src
+          go build -o $GITHUB_WORKSPACE/tools/dlc .
+          echo "dlc built"
+
       - name: Download sing-box
         run: |
           if [ -f tools/sing-box ]; then echo "cached"; exit 0; fi

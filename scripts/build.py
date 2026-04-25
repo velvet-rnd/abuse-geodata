@@ -132,6 +132,44 @@ def build_geodat(
         print(f"  OK → {', '.join('output/' + f for f in out_files)}")
 
 
+def build_geosite(cats: list[dict]) -> None:
+    print("\n[geosite.dat] building")
+    dlc_bin = TOOLS_DIR / "dlc"
+    if not dlc_bin.exists():
+        print("  SKIP: tools/dlc not found", file=sys.stderr)
+        return
+
+    type_filter = ("domain", "mixed")
+    with tempfile.TemporaryDirectory() as tmpdir:
+        datadir = Path(tmpdir)
+        found = False
+        for cat in cats:
+            if cat.get("type", "mixed") not in type_filter:
+                continue
+            name = cat["name"]
+            txt = DATA_DIR / f"{name}-domain.txt"
+            if not txt.exists():
+                continue
+            shutil.copy2(txt, datadir / name)
+            found = True
+
+        if not found:
+            print("  SKIP: no domain files found", file=sys.stderr)
+            return
+
+        result = run(
+            [str(dlc_bin),
+             "--datapath", str(datadir),
+             "--outputdir", str(OUTPUT_DIR),
+             "--outputname", "geosite.dat"],
+            check=False,
+        )
+        if result.returncode != 0:
+            print(f"  ERROR: {result.stderr}", file=sys.stderr)
+        else:
+            print("  OK → output/geosite.dat")
+
+
 def build_srs(cats: list[dict]) -> None:
     """
     Build sing-box rule-set (.srs) files.
@@ -262,12 +300,7 @@ def main():
         }],
     )
 
-    build_geodat(
-        cats,
-        data_type="domain",
-        output_type="v2rayGeositeDat",
-        output_name="geosite.dat",
-    )
+    build_geosite(cats)
 
     build_srs(cats)
 
