@@ -16,8 +16,8 @@ All files are published as [GitHub Releases](../../releases/latest).
 
 | File | Format | Use case |
 |------|--------|----------|
-| `abuse-geoip.dat` | Xray/V2Ray | `abuse-geoip:category-*` routing rules |
-| `abuse-geosite.dat` | Xray/V2Ray | `abuse-geosite:category-*` routing rules |
+| `abuse-geoip.dat` | Xray/V2Ray | `ext:abuse-geoip.dat:category-*` routing rules |
+| `abuse-geosite.dat` | Xray/V2Ray | `ext:abuse-geosite.dat:category-*` routing rules |
 | `abuse-geoip.db` | MaxMind MMDB | sing-box `geoip` rules |
 | `abuse-category-*.srs` | sing-box | Per-category rule-sets |
 | `abuse-category-bundle-strict-*.srs` | sing-box | Aggregated stable categories only |
@@ -35,18 +35,18 @@ All files are published as [GitHub Releases](../../releases/latest).
       {
         "type": "field",
         "ip": [
-          "abuse-geoip:category-sinkhole",
-          "abuse-geoip:category-malware-c2",
-          "abuse-geoip:category-spam",
-          "abuse-geoip:category-brute-force"
+          "ext:abuse-geoip.dat:category-sinkhole",
+          "ext:abuse-geoip.dat:category-malware-c2",
+          "ext:abuse-geoip.dat:category-spam",
+          "ext:abuse-geoip.dat:category-brute-force"
         ],
         "outboundTag": "block"
       },
       {
         "type": "field",
         "domain": [
-          "abuse-geosite:category-malware-c2",
-          "abuse-geosite:category-phishing"
+          "ext:abuse-geosite.dat:category-malware-c2",
+          "ext:abuse-geosite.dat:category-phishing"
         ],
         "outboundTag": "block"
       }
@@ -191,8 +191,8 @@ Subscribe to [@abuse_geodata_bot](https://t.me/abuse_geodata_bot) to get notific
 
 | Файл | Формат | Применение |
 |------|--------|------------|
-| `abuse-geoip.dat` | Xray/V2Ray | Правила роутинга `abuse-geoip:category-*` |
-| `abuse-geosite.dat` | Xray/V2Ray | Правила роутинга `abuse-geosite:category-*` |
+| `abuse-geoip.dat` | Xray/V2Ray | Правила роутинга `ext:abuse-geoip.dat:category-*` |
+| `abuse-geosite.dat` | Xray/V2Ray | Правила роутинга `ext:abuse-geosite.dat:category-*` |
 | `abuse-geoip.db` | MaxMind MMDB | Правила `geoip` в sing-box |
 | `abuse-category-*.srs` | sing-box | Rule-set на каждую категорию |
 | `abuse-category-bundle-strict-*.srs` | sing-box | Агрегат – только стабильные категории |
@@ -210,18 +210,18 @@ Subscribe to [@abuse_geodata_bot](https://t.me/abuse_geodata_bot) to get notific
       {
         "type": "field",
         "ip": [
-          "abuse-geoip:category-sinkhole",
-          "abuse-geoip:category-malware-c2",
-          "abuse-geoip:category-spam",
-          "abuse-geoip:category-brute-force"
+          "ext:abuse-geoip.dat:category-sinkhole",
+          "ext:abuse-geoip.dat:category-malware-c2",
+          "ext:abuse-geoip.dat:category-spam",
+          "ext:abuse-geoip.dat:category-brute-force"
         ],
         "outboundTag": "block"
       },
       {
         "type": "field",
         "domain": [
-          "abuse-geosite:category-malware-c2",
-          "abuse-geosite:category-phishing"
+          "ext:abuse-geosite.dat:category-malware-c2",
+          "ext:abuse-geosite.dat:category-phishing"
         ],
         "outboundTag": "block"
       }
@@ -361,8 +361,8 @@ python scripts/test.py /path/to/release-dir
 
 | 文件 | 格式 | 用途 |
 |------|------|------|
-| `abuse-geoip.dat` | Xray/V2Ray | `abuse-geoip:category-*` 路由规则 |
-| `abuse-geosite.dat` | Xray/V2Ray | `abuse-geosite:category-*` 路由规则 |
+| `abuse-geoip.dat` | Xray/V2Ray | `ext:abuse-geoip.dat:category-*` 路由规则 |
+| `abuse-geosite.dat` | Xray/V2Ray | `ext:abuse-geosite.dat:category-*` 路由规则 |
 | `abuse-geoip.db` | MaxMind MMDB | sing-box `geoip` 规则 |
 | `abuse-category-*.srs` | sing-box | 按类别的规则集 |
 | `abuse-category-bundle-strict-*.srs` | sing-box | 仅包含稳定类别的聚合集 |
@@ -380,18 +380,18 @@ python scripts/test.py /path/to/release-dir
       {
         "type": "field",
         "ip": [
-          "abuse-geoip:category-sinkhole",
-          "abuse-geoip:category-malware-c2",
-          "abuse-geoip:category-spam",
-          "abuse-geoip:category-brute-force"
+          "ext:abuse-geoip.dat:category-sinkhole",
+          "ext:abuse-geoip.dat:category-malware-c2",
+          "ext:abuse-geoip.dat:category-spam",
+          "ext:abuse-geoip.dat:category-brute-force"
         ],
         "outboundTag": "block"
       },
       {
         "type": "field",
         "domain": [
-          "abuse-geosite:category-malware-c2",
-          "abuse-geosite:category-phishing"
+          "ext:abuse-geosite.dat:category-malware-c2",
+          "ext:abuse-geosite.dat:category-phishing"
         ],
         "outboundTag": "block"
       }
