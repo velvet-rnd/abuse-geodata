@@ -68,10 +68,10 @@ Place `abuse-geoip.dat` and `abuse-geosite.dat` in your Xray assets directory (d
 mkdir -p /opt/remnanode/xray/share
 
 curl -sLo /opt/remnanode/xray/share/abuse-geoip.dat \
-  https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-geoip.dat
+  https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-geoip.dat
 
 curl -sLo /opt/remnanode/xray/share/abuse-geosite.dat \
-  https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-geosite.dat
+  https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-geosite.dat
 ```
 
 2. Mount the files in `docker-compose.yml` (remnanode service):
@@ -114,7 +114,7 @@ volumes:
 4. Auto-update (optional) — add to crontab:
 
 ```bash
-0 4 * * * curl -sLo /opt/remnanode/xray/share/abuse-geoip.dat https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-geoip.dat && curl -sLo /opt/remnanode/xray/share/abuse-geosite.dat https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-geosite.dat && docker restart remnanode
+0 4 * * * curl -sLo /opt/remnanode/xray/share/abuse-geoip.dat https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-geoip.dat && curl -sLo /opt/remnanode/xray/share/abuse-geosite.dat https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-geosite.dat && docker restart remnanode
 ```
 
 #### sing-box
@@ -127,7 +127,7 @@ volumes:
         "tag": "malware-c2-ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-category-malware-c2-ip.srs",
+        "url": "https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-category-malware-c2-ip.srs",
         "update_interval": "24h"
       }
     ],
@@ -150,7 +150,7 @@ volumes:
 
 ```bash
 ipset create abuse-block hash:net
-curl -sL https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-category-bundle-strict-ip.txt \
+curl -sL https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-category-bundle-strict-ip.txt \
   | grep -v '^#' | xargs -I{} ipset add abuse-block {}
 
 iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
@@ -306,10 +306,10 @@ Subscribe to [@abuse_geodata_bot](https://t.me/abuse_geodata_bot) to get notific
 mkdir -p /opt/remnanode/xray/share
 
 curl -sLo /opt/remnanode/xray/share/abuse-geoip.dat \
-  https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-geoip.dat
+  https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-geoip.dat
 
 curl -sLo /opt/remnanode/xray/share/abuse-geosite.dat \
-  https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-geosite.dat
+  https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-geosite.dat
 ```
 
 2. Примонтируй файлы в `docker-compose.yml` (сервис remnanode):
@@ -352,7 +352,7 @@ volumes:
 4. Автообновление (опционально) — добавь в crontab:
 
 ```bash
-0 4 * * * curl -sLo /opt/remnanode/xray/share/abuse-geoip.dat https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-geoip.dat && curl -sLo /opt/remnanode/xray/share/abuse-geosite.dat https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-geosite.dat && docker restart remnanode
+0 4 * * * curl -sLo /opt/remnanode/xray/share/abuse-geoip.dat https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-geoip.dat && curl -sLo /opt/remnanode/xray/share/abuse-geosite.dat https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-geosite.dat && docker restart remnanode
 ```
 
 #### sing-box
@@ -365,7 +365,7 @@ volumes:
         "tag": "malware-c2-ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-category-malware-c2-ip.srs",
+        "url": "https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-category-malware-c2-ip.srs",
         "update_interval": "24h"
       }
     ],
@@ -383,7 +383,7 @@ volumes:
 
 ```bash
 ipset create abuse-block hash:net
-curl -sL https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-category-bundle-strict-ip.txt \
+curl -sL https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-category-bundle-strict-ip.txt \
   | grep -v '^#' | xargs -I{} ipset add abuse-block {}
 
 iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
@@ -538,10 +538,10 @@ python scripts/test.py /path/to/release-dir
 mkdir -p /opt/remnanode/xray/share
 
 curl -sLo /opt/remnanode/xray/share/abuse-geoip.dat \
-  https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-geoip.dat
+  https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-geoip.dat
 
 curl -sLo /opt/remnanode/xray/share/abuse-geosite.dat \
-  https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-geosite.dat
+  https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-geosite.dat
 ```
 
 2. 在 `docker-compose.yml` 中挂载文件（remnanode 服务）：
@@ -584,7 +584,7 @@ volumes:
 4. 自动更新（可选）— 添加到 crontab：
 
 ```bash
-0 4 * * * curl -sLo /opt/remnanode/xray/share/abuse-geoip.dat https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-geoip.dat && curl -sLo /opt/remnanode/xray/share/abuse-geosite.dat https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-geosite.dat && docker restart remnanode
+0 4 * * * curl -sLo /opt/remnanode/xray/share/abuse-geoip.dat https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-geoip.dat && curl -sLo /opt/remnanode/xray/share/abuse-geosite.dat https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-geosite.dat && docker restart remnanode
 ```
 
 #### sing-box
@@ -597,7 +597,7 @@ volumes:
         "tag": "malware-c2-ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-category-malware-c2-ip.srs",
+        "url": "https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-category-malware-c2-ip.srs",
         "update_interval": "24h"
       }
     ],
@@ -615,7 +615,7 @@ volumes:
 
 ```bash
 ipset create abuse-block hash:net
-curl -sL https://github.com/velvetrnd/abuse-geodata/releases/latest/download/abuse-category-bundle-strict-ip.txt \
+curl -sL https://github.com/velvet-rnd/abuse-geodata/releases/latest/download/abuse-category-bundle-strict-ip.txt \
   | grep -v '^#' | xargs -I{} ipset add abuse-block {}
 
 iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
