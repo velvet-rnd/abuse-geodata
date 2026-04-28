@@ -193,7 +193,7 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 |:-------|:----|
 | Feodo Tracker (abuse.ch) | https://feodotracker.abuse.ch |
 | URLhaus (abuse.ch) | https://urlhaus.abuse.ch |
-| ThreatFox (abuse.ch) | https://threatfox.abuse.ch |
+| ThreatFox full export (abuse.ch) | https://threatfox.abuse.ch |
 | Emerging Threats | https://rules.emergingthreats.net |
 | C2IntelFeeds | https://github.com/drb-ra/C2IntelFeeds |
 | Threatview.io | https://threatview.io |
@@ -425,7 +425,7 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 |:---------|:----|
 | Feodo Tracker (abuse.ch) | https://feodotracker.abuse.ch |
 | URLhaus (abuse.ch) | https://urlhaus.abuse.ch |
-| ThreatFox (abuse.ch) | https://threatfox.abuse.ch |
+| ThreatFox full export (abuse.ch) | https://threatfox.abuse.ch |
 | Emerging Threats | https://rules.emergingthreats.net |
 | C2IntelFeeds | https://github.com/drb-ra/C2IntelFeeds |
 | Threatview.io | https://threatview.io |
@@ -657,7 +657,7 @@ iptables -I FORWARD -m set --match-set abuse-block dst -j DROP
 |:-------|:----|
 | Feodo Tracker (abuse.ch) | https://feodotracker.abuse.ch |
 | URLhaus (abuse.ch) | https://urlhaus.abuse.ch |
-| ThreatFox (abuse.ch) | https://threatfox.abuse.ch |
+| ThreatFox full export (abuse.ch) | https://threatfox.abuse.ch |
 | Emerging Threats | https://rules.emergingthreats.net |
 | C2IntelFeeds | https://github.com/drb-ra/C2IntelFeeds |
 | Threatview.io | https://threatview.io |

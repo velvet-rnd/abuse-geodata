@@ -11,6 +11,7 @@ Output structure:
 """
 
 import csv
+import io
 import ipaddress
 import json
 import re
@@ -18,7 +19,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
-from io import StringIO
+import zipfile
 from pathlib import Path
 
 import yaml
@@ -32,6 +33,8 @@ DOMAIN_RE = re.compile(r"^(?!-)[a-zA-Z0-9\-]{1,63}(?<!-)(\.[a-zA-Z0-9\-]{1,63})+
 FETCH_RETRIES = 3
 FETCH_RETRY_DELAY = 5
 MAX_RESPONSE_SIZE = 100 * 1024 * 1024  # 100 MB
+MAX_THREATFOX_SIZE = 500 * 1024 * 1024  # 500 MB (full export ZIP is ~200 MB)
+MAX_THREATFOX_UNCOMPRESSED = 2 * 1024 * 1024 * 1024  # 2 GB zip bomb guard
 ALLOWED_SCHEMES = ("https://", "http://")
 
 
@@ -95,6 +98,46 @@ def fetch_url(url: str) -> str | None:
     return None
 
 
+def fetch_threatfox_full(url: str) -> dict | None:
+    if not any(url.startswith(s) for s in ALLOWED_SCHEMES):
+        print(f"  ERROR: blocked URL scheme: {url}", file=sys.stderr)
+        return None
+    req = urllib.request.Request(url, headers={"User-Agent": "abuse-geodata/1.0"})
+    for attempt in range(1, FETCH_RETRIES + 1):
+        try:
+            print(f"  fetching {url} (attempt {attempt})")
+            with urllib.request.urlopen(req, timeout=120) as resp:
+                chunks = []
+                total = 0
+                while True:
+                    chunk = resp.read(1024 * 1024)
+                    if not chunk:
+                        break
+                    total += len(chunk)
+                    if total > MAX_THREATFOX_SIZE:
+                        print(f"  ERROR: response too large (>{MAX_THREATFOX_SIZE} bytes): {url}", file=sys.stderr)
+                        return None
+                    chunks.append(chunk)
+                data = b"".join(chunks)
+            with zipfile.ZipFile(io.BytesIO(data)) as zf:
+                json_names = [n for n in zf.namelist() if n.endswith(".json")]
+                if not json_names:
+                    print(f"  ERROR: no .json file found in ZIP from {url}", file=sys.stderr)
+                    return None
+                info = zf.getinfo(json_names[0])
+                if info.file_size > MAX_THREATFOX_UNCOMPRESSED:
+                    print(f"  ERROR: uncompressed size {info.file_size} exceeds limit: {url}", file=sys.stderr)
+                    return None
+                raw = zf.read(json_names[0])
+            return json.loads(raw)
+        except Exception as e:
+            print(f"  WARN attempt {attempt}/{FETCH_RETRIES}: {e}", file=sys.stderr)
+            if attempt < FETCH_RETRIES:
+                time.sleep(FETCH_RETRY_DELAY)
+    print(f"  ERROR: all {FETCH_RETRIES} attempts failed for {url}", file=sys.stderr)
+    return None
+
+
 def parse_text(
     content: str,
     comment_char: str = "#",
@@ -145,7 +188,7 @@ def parse_csv(
             continue
         data_lines.append(line)
     csv_text = (header + "\n" if header else "") + "\n".join(data_lines)
-    reader = csv.DictReader(StringIO(csv_text))
+    reader = csv.DictReader(io.StringIO(csv_text))
     for row in reader:
         if column not in row:
             continue
@@ -181,6 +224,30 @@ def parse_hosts(content: str, filter_re: str = None) -> list[str]:
             if is_valid_domain(domain):
                 results.append(domain)
     return results
+
+
+def parse_threatfox_full(data: dict, threat_type: str = None) -> tuple[list[str], list[str]]:
+    ips, domains = [], []
+    for _ioc_id, entries in data.items():
+        if not isinstance(entries, list):
+            continue
+        for entry in entries:
+            if threat_type and entry.get("threat_type") != threat_type:
+                continue
+            ioc_type = entry.get("ioc_type", "")
+            ioc_value = entry.get("ioc_value", "")
+            if ioc_type == "ip:port":
+                ip = ioc_value.rsplit(":", 1)[0]
+                if is_valid_ip(ip):
+                    ips.append(ip)
+            elif ioc_type == "domain":
+                if is_valid_domain(ioc_value):
+                    domains.append(ioc_value)
+            elif ioc_type == "url":
+                domain = extract_domain_from_url(ioc_value)
+                if domain:
+                    domains.append(domain)
+    return ips, domains
 
 
 def classify(
@@ -222,6 +289,12 @@ def load_local(path: Path) -> str | None:
 
 def process_source(src: dict) -> tuple[list[str], list[str]]:
     fmt = src.get("format", "text")
+
+    if fmt == "threatfox_full":
+        data = fetch_threatfox_full(src["url"])
+        if data is None:
+            return [], []
+        return parse_threatfox_full(data, threat_type=src.get("threat_type"))
 
     if fmt == "local":
         url = src["url"]
